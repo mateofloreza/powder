@@ -199,7 +199,6 @@ pc.defineParameter(
 params = pc.bindParameters()
 request = pc.makeRequestRSpec()
 
-role = "cn"
 cn_node = request.RawPC("cn-host")
 cn_node.component_manager_id = COMP_MANAGER_ID
 cn_node.hardware_type = params.cn_nodetype
@@ -209,14 +208,7 @@ cn_if.addAddress(rspec.IPv4Address("192.168.1.1", "255.255.255.0"))
 cn_link = request.Link("cn-link")
 cn_link.bandwidth = 10*1000*1000
 cn_link.addInterface(cn_if)
-
-if params.oai_cn_commit_hash:
-    oai_cn_hash = params.oai_cn_commit_hash
-else:
-    oai_cn_hash = DEFAULT_NR_CN_HASH
-
-cmd = '{} "{}" {}'.format(OAI_DEPLOY_SCRIPT, oai_cn_hash, role)
-cn_node.addService(rspec.Execute(shell="bash", command=cmd))
+cn_node.addService(rspec.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT))
 
 if params.srsran_commit_hash:
     srsran_hash = params.srsran_commit_hash

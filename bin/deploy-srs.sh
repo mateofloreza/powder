@@ -16,7 +16,8 @@ sudo apt install -y build-essential \
     libboost-program-options-dev \
     libconfig++-dev \
     libsctp-dev \
-    libzmq3-dev
+    libzmq3-dev \
+    numactl
 
 cd $SRCDIR
 git clone $SRS_REPO srsran

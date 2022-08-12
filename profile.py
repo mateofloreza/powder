@@ -10,31 +10,23 @@ import geni.rspec.emulab.pnext as PN
 tourDescription = """
 ##  srsRAN on POWDER Paired Radio Workbench
 
-(--Need to update below--)
-This profile instantiates an experiment for testing OAI 5G in standalone mode
-using one of three Paired Radio Workbenches available on POWDER. The test
-benches are all identical and currently include two USRP X310s, each with a
-single UBX160 daughterboard, and a common 10 MHz clock and PPS reference
-provided by an OctoClock. The transceivers are connected via SMA cables through
-30 dB attenuators, providing for an interference free RF environment.
+This profile instantiates an experiment that can deploy an end to end 5G or LTE
+network using srsRAN and Open5GS using one of the Paired Radio Workbenches
+available on POWDER. These workbenched all include two USRP X310s, each with at
+least one UBX160 daughterboard, and a common 10 MHz clock and PPS reference
+provided by an OctoClock. The X310s on `bench_b` include two UBX160
+daughterboards, making them suitable for 5G NSA or MIMO configurations. The
+transceivers are connected via SMA cables through 30 dB attenuators, providing
+for an interference free RF environment.
 
 Note: Select Workbench A or B if you are not a POWDER team member; Workbench C
 is for internal use only.
 
 The following will be deployed on server-class compute nodes:
 
-- Docker-based OAI 5G Core Network
-- OAI 5G gNodeB (fiber connection to 5GCN and X310)
-- OAI 5G nrUE (fiber connection to the other X310)
-
-#### Bleeding-edge Software Caveats!
-
-The OAI 5G RAN components are a work-in-progress at the time of writing this. In
-fact, this profile currently targets a feature branch that has yet to be merged
-into the mainline OAI develop branch. You are likely to see warnings, errors,
-crashes, etc, when running the NR soft modems. Please subscribe to the OAI user
-or developer mailing lists to monitor and ask questions about the current status
-of OAI 5G: https://gitlab.eurecom.fr/oai/openairinterface5g/-/wikis/MailingList.
+- Open5GS 5G/LTE core network
+- srsRAN gNodeB/eNodeB (fiber connection to 5GCN and X310)
+- srsRAN 5G/LTE UE (fiber connection to the other X310)
 
 """
 
@@ -45,88 +37,6 @@ the "Startup" column on the "List View" tab for your experiment and wait until
 all of the compute nodes show "Finished" before proceeding.
 
 After all startup scripts have finished...
-
-On `cn`:
-
-If you'd like to monitor traffic between the various network functions and the
-gNodeB, start tshark in a session:
-
-```
-sudo tshark -i demo-oai \
-  -f "not arp and not port 53 and not host archive.ubuntu.com and not host security.ubuntu.com"
-```
-
-In another session, start the 5G core network services. It will take several
-seconds for the services to start up. Make sure the script indicates that the
-services are healthy before moving on.
-
-```
-cd /var/tmp/oai-cn5g-fed/docker-compose
-sudo python3 ./core-network.py --type start-mini --fqdn no --scenario 1
-```
-
-In yet another session, start following the logs for the AMF. This way you can
-see when the UE syncs with the network.
-
-```
-sudo docker logs -f oai-amf
-```
-
-On `nodeb`:
-
-```
-sudo /var/tmp/oairan/cmake_targets/ran_build/build/nr-softmodem -E \
-  -O /var/tmp/etc/oai/gnb.sa.band78.fr1.106PRB.usrpx310.conf --sa
-```
-
-On `ue`:
-
-After you've started the gNodeB, start the UE:
-
-```
-sudo /var/tmp/oairan/cmake_targets/ran_build/build/nr-uesoftmodem -E \
-  -O /var/tmp/etc/oai/ue.conf \
-  -r 106 \
-  -C 3619200000 \
-  --usrp-args "clock_source=external,type=x300" \
-  --band 78 \
-  --numerology 1 \
-  --ue-txgain 0 \
-  --ue-rxgain 104 \
-  --nokrnmod \
-  --dlsch-parallel 4 \
-  --sa
-```
-
-After the UE associates, open another session check the UE IP address.
-
-```
-# check UE IP address
-ifconfig oaitun_ue1
-```
-
-You should now be able to generate traffic in either direction:
-
-```
-# from UE to CN traffic gen node (in session on ue node)
-ping -I oaitun_ue1 192.168.70.135
-
-# from CN traffic generation service to UE (in session on cn node)
-sudo docker exec -it oai-ext-dn ping <UE IP address>
-```
-
-Known Issues:
-
-- The gNodeB and nrUE soft-modems may spam warnings/errors about missed DCI or
-  ULSCH detections. They may crash unexpectedly.
-
-- Exiting the OAI RAN processes with ctrl-c will often leave the SDR in a funny
-  state, so that the next time you start the nodeB/UE, it may crash with a UHD
-  error. If this happens, simply start the nodeB/UE again.
-
-- The UE may hang after ctrl-c in some cases, requiring you to kill it some
-  other way. If this happens, use `ps aux` to identify the PID of of the
-  nr-uesoftmodem process and do `kill -9 {PID}` to kill it.
 
 """
 

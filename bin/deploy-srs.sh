@@ -8,16 +8,35 @@ if [ -f $SRCDIR/srs-setup-complete ]; then
     exit 0
 fi
 
-sudo apt update
+while ! wget -qO - http://repos.emulab.net/emulab.key | sudo apt-key add -
+do
+    echo Failed to get emulab key, retrying
+done
+
+while ! sudo add-apt-repository -y http://repos.emulab.net/powder/ubuntu/
+do
+    echo Failed to get johnsond ppa, retrying
+done
+
+while ! sudo apt-get update
+do
+    echo Failed to update, retrying
+done
+
 sudo apt install -y build-essential \
     cmake \
+    iperf3 \
+    i7z \
     libfftw3-dev \
     libmbedtls-dev \
     libboost-program-options-dev \
     libconfig++-dev \
     libsctp-dev \
+    libuhd-dev \
     libzmq3-dev \
-    numactl
+    linux-tools-`uname -r` \
+    numactl \
+    uhd-host
 
 cd $SRCDIR
 git clone $SRS_REPO srsran

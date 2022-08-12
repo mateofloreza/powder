@@ -156,7 +156,7 @@ nodeb.hardware_type = params.sdr_nodetype
 if params.sdr_compute_image:
     nodeb.disk_image = params.sdr_compute_image
 else:
-    nodeb.disk_image = LOWLAT_IMG
+    nodeb.disk_image = UBUNTU_IMG
 
 nodeb_cn_if = nodeb.addInterface("nodeb-cn-if")
 nodeb_cn_if.addAddress(rspec.IPv4Address("192.168.1.2", "255.255.255.0"))
@@ -186,7 +186,7 @@ ue.hardware_type = params.sdr_nodetype
 if params.sdr_compute_image:
     ue.disk_image = params.sdr_compute_image
 else:
-    ue.disk_image = LOWLAT_IMG
+    ue.disk_image = UBUNTU_IMG
 
 ue_usrp_if = ue.addInterface("ue-usrp-if")
 ue_usrp_if.addAddress(rspec.IPv4Address("192.168.40.1", "255.255.255.0"))

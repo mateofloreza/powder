@@ -38,10 +38,34 @@ all of the compute nodes show "Finished" before proceeding.
 
 After all startup scripts have finished...
 
+### srsRAN + Open5GS SA Mode
+
+On `cn-host`:
+
+```
+# watch the Open5GS AMF log
+sudo tail -f /var/log/open5gs/amf.log
+```
+
+On `nodeb-comp`:
+
+```
+# start gNB (we use numactl to bind the process to a single CPU to improve performance)
+sudo numactl --membind=0 --cpunodebind=0 srsenb /etc/srsran/enb-sa.conf
+```
+
+On `ue-comp`:
+
+```
+# start UE
+sudo numactl --membind=0 --cpunodebind=0 srsue /etc/srsran/ue-sa.conf
+```
+
 """
 
 BIN_PATH = "/local/repository/bin"
 ETC_PATH = "/local/repository/etc"
+IP_NAT_SCRIPT = os.path.join(BIN_PATH, "add-nat-and-ip-forwarding.sh")
 SRS_DEPLOY_SCRIPT = os.path.join(BIN_PATH, "deploy-srs.sh")
 OPEN5GS_DEPLOY_SCRIPT = os.path.join(BIN_PATH, "deploy-open5gs.sh")
 LOWLAT_IMG = "urn:publicid:IDN+emulab.net+image+PowderTeam:U18LL-SRSLTE"
@@ -118,6 +142,7 @@ cn_if.addAddress(rspec.IPv4Address("192.168.1.1", "255.255.255.0"))
 cn_link = request.Link("cn-link")
 cn_link.bandwidth = 10*1000*1000
 cn_link.addInterface(cn_if)
+cn_node.addService(rspec.Execute(shell="bash", command=IP_NAT_SCRIPT))
 cn_node.addService(rspec.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT))
 
 if params.srsran_commit_hash:

@@ -130,6 +130,22 @@ pc.defineParameter(
     advanced=True
 )
 
+pc.defineParameter(
+    name="nodeb_node_id",
+    description="use a specific compute node for the nodeB",
+    typ=portal.ParameterType.STRING,
+    defaultValue="",
+    advanced=True
+)
+
+pc.defineParameter(
+    name="ue_node_id",
+    description="use a specific compute node for the UE",
+    typ=portal.ParameterType.STRING,
+    defaultValue="",
+    advanced=True
+)
+
 params = pc.bindParameters()
 request = pc.makeRequestRSpec()
 
@@ -152,7 +168,12 @@ else:
 
 nodeb = request.RawPC("nodeb-comp")
 nodeb.component_manager_id = COMP_MANAGER_ID
-nodeb.hardware_type = params.sdr_nodetype
+
+if params.nodeb_node_id:
+    nodeb.component_id = params.nodeb_node_id
+else:
+    nodeb.hardware_type = params.sdr_nodetype
+
 if params.sdr_compute_image:
     nodeb.disk_image = params.sdr_compute_image
 else:
@@ -182,7 +203,12 @@ nodeb_sdr_link.addInterface(nodeb_sdr_if)
 
 ue = request.RawPC("ue-comp")
 ue.component_manager_id = COMP_MANAGER_ID
-ue.hardware_type = params.sdr_nodetype
+
+if params.ue_node_id:
+    ue.component_id = params.ue_node_id
+else:
+    ue.hardware_type = params.sdr_nodetype
+
 if params.sdr_compute_image:
     ue.disk_image = params.sdr_compute_image
 else:

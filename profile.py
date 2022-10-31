@@ -23,7 +23,7 @@ The following will be deployed on server-class compute nodes:
 
 - Open5GS 5G/LTE core network
 - srsRAN gNodeB/eNodeB (fiber connection to 5GCN and X310)
-- srsRAN 5G/LTE UE
+- srsRAN 5G/LTE UE (fiber connection to other X310)
 
 """
 

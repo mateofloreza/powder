@@ -8,7 +8,7 @@ import geni.rspec.emulab.pnext as PN
 
 
 tourDescription = """
-##  srsRAN on POWDER Paired Radio Workbench
+###  srsRAN on POWDER Paired Radio Workbench
 
 This profile instantiates an experiment that can deploy an end to end 5G or LTE
 network using srsRAN and Open5GS using one of the Paired Radio Workbenches
@@ -18,9 +18,6 @@ provided by an OctoClock. The X310s on `bench_b` include two UBX160
 daughterboards, making them suitable for 5G NSA or MIMO configurations. The
 transceivers are connected via SMA cables through 30 dB attenuators, providing
 for an interference free RF environment.
-
-Note: Select Workbench A or B if you are not a POWDER team member; Workbench C
-is for internal use only.
 
 The following will be deployed on server-class compute nodes:
 
@@ -38,7 +35,7 @@ all of the compute nodes show "Finished" before proceeding.
 
 After all startup scripts have finished...
 
-### srsRAN + Open5GS SA Mode
+#### srsRAN + Open5GS SA Mode
 
 On `cn-host`:
 
@@ -76,7 +73,6 @@ DEFAULT_SRS_HASH = "release_22_04_1"
 BENCH_SDR_IDS = {
     "bench_a": ["oai-wb-a1", "oai-wb-a2"],
     "bench_b": ["oai-wb-b1", "oai-wb-b2"],
-    "bench_c": ["alex-3", "alex-4"],
 }
 
 pc = portal.Context()

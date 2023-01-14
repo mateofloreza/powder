@@ -142,6 +142,14 @@ pc.defineParameter(
     advanced=True
 )
 
+pc.defineParameter(
+    name="ue2_node_id",
+    description="use a specific compute node for the UE",
+    typ=portal.ParameterType.STRING,
+    defaultValue="",
+    advanced=True
+)
+
 params = pc.bindParameters()
 request = pc.makeRequestRSpec()
 
@@ -241,7 +249,7 @@ if params.sdr_compute_image:
 else:
     ue2.disk_image = UBUNTU_IMG
 
-ue2_usrp_if = ue.addInterface("ue2-usrp-if")
+ue2_usrp_if = ue2.addInterface("ue2-usrp-if")
 ue2_usrp_if.addAddress(rspec.IPv4Address("192.168.40.2", "255.255.255.0"))
 cmd = '{} "{}"'.format(SRS_DEPLOY_SCRIPT, srsran_hash)
 ue2.addService(rspec.Execute(shell="bash", command=cmd))
@@ -251,7 +259,7 @@ ue2.addService(rspec.Execute(shell="bash", command="/local/repository/bin/tune-s
 ue2_sdr = request.RawPC("ue2-sdr")
 ue2_sdr.component_manager_id = COMP_MANAGER_ID
 ue2_sdr.component_id = BENCH_SDR_IDS[params.bench_id][1]
-ue2_sdr_if = ue_sdr.addInterface("ue2-sdr-if")
+ue2_sdr_if = ue2_sdr.addInterface("ue2-sdr-if")
 
 ue2_sdr_link = request.Link("ue2-sdr-link")
 ue2_sdr_link.bandwidth = 10*1000*1000

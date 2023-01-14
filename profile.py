@@ -65,7 +65,7 @@ ETC_PATH = "/local/repository/etc"
 IP_NAT_SCRIPT = os.path.join(BIN_PATH, "add-nat-and-ip-forwarding.sh")
 SRS_DEPLOY_SCRIPT = os.path.join(BIN_PATH, "deploy-srs.sh")
 OPEN5GS_DEPLOY_SCRIPT = os.path.join(BIN_PATH, "deploy-open5gs.sh")
-LOWLAT_IMG = "urn:publicid:IDN+emulab.net+image+PowderTeam:U18LL-SRSLTE"
+LOWLAT_IMG = "urn:publicid:IDN+emulab.net+image+PowderProfiles:U18LL-SRSLTE:2"
 UBUNTU_IMG = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD"
 COMP_MANAGER_ID = "urn:publicid:IDN+emulab.net+authority+cm"
 DEFAULT_SRS_HASH = "release_22_04_1"
@@ -179,9 +179,9 @@ else:
     nodeb.hardware_type = params.sdr_nodetype
 
 if params.sdr_compute_image:
-    nodeb.disk_image = params.sdr_compute_image
+    nodeb.disk_image = LOWLAT_IMG
 else:
-    nodeb.disk_image = UBUNTU_IMG
+    nodeb.disk_image = LOWLAT_IMG
 
 nodeb_cn_if = nodeb.addInterface("nodeb-cn-if")
 nodeb_cn_if.addAddress(rspec.IPv4Address("192.168.1.2", "255.255.255.0"))
@@ -214,9 +214,9 @@ else:
     ue.hardware_type = params.sdr_nodetype
 
 if params.sdr_compute_image:
-    ue.disk_image = params.sdr_compute_image
+    ue.disk_image = LOWLAT_IMG
 else:
-    ue.disk_image = UBUNTU_IMG
+    ue.disk_image = LOWLAT_IMG
 
 ue_usrp_if = ue.addInterface("ue-usrp-if")
 ue_usrp_if.addAddress(rspec.IPv4Address("192.168.40.1", "255.255.255.0"))

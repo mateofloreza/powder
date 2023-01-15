@@ -50,6 +50,21 @@ sudo make install
 sudo ldconfig
 sudo srsran_install_configs.sh service
 sudo cp /local/repository/etc/srsran/* /etc/srsran/
+sudo apt install -y make g++ libsctp-dev lksctp-tools cmake snap
+sudo apt-get install build-essential libssl-dev -y
+cd /tmp
+wget https://github.com/Kitware/CMake/releases/download/v3.20.0/cmake-3.20.0.tar.gz
+tar -zxvf cmake-3.20.0.tar.gz
+cd cmake-3.20.0
+./bootstrap
+make
+sudo make install
+cd
+git clone https://github.com/aligungr/UERANSIM
+cd UERANSIM/
+make
+
+
 
 touch $SRCDIR/srs-setup-complete
 

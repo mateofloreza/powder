@@ -179,6 +179,10 @@ nodeb_cn_if = nodeb.addInterface("nodeb-cn-if")
 nodeb_cn_if.addAddress(rspec.IPv4Address("192.168.1.2", "255.255.255.0"))
 cn_link.addInterface(nodeb_cn_if)
 
+nodeb2_cn_if = nodeb.addInterface("nodeb2-cn-if")
+nodeb2_cn_if.addAddress(rspec.IPv4Address("192.168.1.3", "255.255.255.0"))
+cn_link.addInterface(nodeb2_cn_if)
+
 nodeb_usrp_if = nodeb.addInterface("nodeb-usrp-if")
 nodeb_usrp_if.addAddress(rspec.IPv4Address("192.168.40.1", "255.255.255.0"))
 

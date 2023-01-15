@@ -65,7 +65,7 @@ ETC_PATH = "/local/repository/etc"
 IP_NAT_SCRIPT = os.path.join(BIN_PATH, "add-nat-and-ip-forwarding.sh")
 SRS_DEPLOY_SCRIPT = os.path.join(BIN_PATH, "deploy-srs.sh")
 OPEN5GS_DEPLOY_SCRIPT = os.path.join(BIN_PATH, "deploy-open5gs.sh")
-LOWLAT_IMG = "urn:publicid:IDN+emulab.net+image+PowderProfiles:U18LL-SRSLTE:2"
+LOWLAT_IMG = "urn:publicid:IDN+emulab.net+image+PowderTeam:U18LL-SRSLTE"
 UBUNTU_IMG = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU18-64-STD"
 COMP_MANAGER_ID = "urn:publicid:IDN+emulab.net+authority+cm"
 DEFAULT_SRS_HASH = "release_22_04_1"
@@ -142,14 +142,6 @@ pc.defineParameter(
     advanced=True
 )
 
-pc.defineParameter(
-    name="ue2_node_id",
-    description="use a specific compute node for the UE",
-    typ=portal.ParameterType.STRING,
-    defaultValue="",
-    advanced=True
-)
-
 params = pc.bindParameters()
 request = pc.makeRequestRSpec()
 
@@ -179,9 +171,9 @@ else:
     nodeb.hardware_type = params.sdr_nodetype
 
 if params.sdr_compute_image:
-    nodeb.disk_image = LOWLAT_IMG
+    nodeb.disk_image = params.sdr_compute_image
 else:
-    nodeb.disk_image = LOWLAT_IMG
+    nodeb.disk_image = UBUNTU_IMG
 
 nodeb_cn_if = nodeb.addInterface("nodeb-cn-if")
 nodeb_cn_if.addAddress(rspec.IPv4Address("192.168.1.2", "255.255.255.0"))
@@ -214,9 +206,9 @@ else:
     ue.hardware_type = params.sdr_nodetype
 
 if params.sdr_compute_image:
-    ue.disk_image = LOWLAT_IMG
+    ue.disk_image = params.sdr_compute_image
 else:
-    ue.disk_image = LOWLAT_IMG
+    ue.disk_image = UBUNTU_IMG
 
 ue_usrp_if = ue.addInterface("ue-usrp-if")
 ue_usrp_if.addAddress(rspec.IPv4Address("192.168.40.1", "255.255.255.0"))
@@ -234,37 +226,6 @@ ue_sdr_link = request.Link("ue-sdr-link")
 ue_sdr_link.bandwidth = 10*1000*1000
 ue_sdr_link.addInterface(ue_usrp_if)
 ue_sdr_link.addInterface(ue_sdr_if)
-
-
-#ue2 = request.RawPC("ue2-comp")
-#ue2.component_manager_id = COMP_MANAGER_ID
-#
-#if params.ue_node_id:
-#    ue2.component_id = params.ue_node_id
-#else:
-#    ue2.hardware_type = params.sdr_nodetype
-#
-#if params.sdr_compute_image:
-#    ue2.disk_image = params.sdr_compute_image
-#else:
-#    ue2.disk_image = UBUNTU_IMG
-#
-#ue2_usrp_if = ue2.addInterface("ue2-usrp-if")
-#ue2_usrp_if.addAddress(rspec.IPv4Address("192.168.40.2", "255.255.255.0"))
-#cmd = '{} "{}"'.format(SRS_DEPLOY_SCRIPT, srsran_hash)
-#ue2.addService(rspec.Execute(shell="bash", command=cmd))
-#ue2.addService(rspec.Execute(shell="bash", command="/local/repository/bin/tune-cpu.sh"))
-#ue2.addService(rspec.Execute(shell="bash", command="/local/repository/bin/tune-sdr-iface.sh"))
-#
-#ue2_sdr = request.RawPC("ue2-sdr")
-#ue2_sdr.component_manager_id = COMP_MANAGER_ID
-#ue2_sdr.component_id = BENCH_SDR_IDS[params.bench_id][1]
-#ue2_sdr_if = ue2_sdr.addInterface("ue2-sdr-if")
-#
-#ue2_sdr_link = request.Link("ue2-sdr-link")
-#ue2_sdr_link.bandwidth = 10*1000*1000
-#ue2_sdr_link.addInterface(ue2_usrp_if)
-#ue2_sdr_link.addInterface(ue2_sdr_if)
 
 tour = IG.Tour()
 tour.Description(IG.Tour.MARKDOWN, tourDescription)

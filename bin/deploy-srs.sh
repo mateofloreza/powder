@@ -23,35 +23,33 @@ do
     echo Failed to update, retrying
 done
 
-#sudo apt install -y build-essential \
-#    cmake \
-#    iperf3 \
-#    i7z \
-#    libfftw3-dev \
-#    libmbedtls-dev \
-#    libboost-program-options-dev \
-#    libconfig++-dev \
-#    libsctp-dev \
-#    libuhd-dev \
-#    libzmq3-dev \
-#    linux-tools-`uname -r` \
-#    numactl \
-#    uhd-host
-#
-#cd $SRCDIR
-#git clone $SRS_REPO srsran
-#cd srsran
-#git checkout $COMMIT_HASH
-#mkdir build
-#cd build
-#cmake ../ -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-#    -DRIC_GENERATED_E2AP_BINDING_DIR=${SRS}/e2_bindings/E2AP-v01.01 \
-#    -DRIC_GENERATED_E2SM_KPM_BINDING_DIR=${SRS}/e2_bindings/E2SM-KPM \
-#    -DRIC_GENERATED_E2SM_GNB_NRT_BINDING_DIR=${SRS}/e2_bindings/E2SM-GNB-NRT
-#make -j `nproc`
-#sudo make install
-#sudo ldconfig
-#sudo srsran_install_configs.sh service
-#sudo cp /local/repository/etc/srsran/* /etc/srsran/
-#
-#touch $SRCDIR/srs-setup-complete
+sudo apt install -y build-essential \
+    cmake \
+    iperf3 \
+    i7z \
+    libfftw3-dev \
+    libmbedtls-dev \
+    libboost-program-options-dev \
+    libconfig++-dev \
+    libsctp-dev \
+    libuhd-dev \
+    libzmq3-dev \
+    linux-tools-`uname -r` \
+    numactl \
+    uhd-host
+
+cd $SRCDIR
+git clone $SRS_REPO srsran
+cd srsran
+git checkout $COMMIT_HASH
+mkdir build
+cd build
+cmake ../
+make -j `nproc`
+sudo make install
+sudo ldconfig
+sudo srsran_install_configs.sh service
+sudo cp /local/repository/etc/srsran/* /etc/srsran/
+
+touch $SRCDIR/srs-setup-complete
+

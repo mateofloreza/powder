@@ -164,6 +164,15 @@ logger:
 #        dnn: ims
 #        dev: ogstun3
 #
+#upf:
+#    pfcp:
+#      - addr: 127.0.0.7
+#    gtpu:
+#      - addr: 192.168.1.1
+#    subnet:
+#      - addr: 10.45.0.1/16
+#      - addr: 2001:db8:cafe::1/48
+
 upf:
     pfcp:
       - addr: 127.0.0.7
@@ -171,8 +180,8 @@ upf:
       - addr: 192.168.1.1
     subnet:
       - addr: 10.45.0.1/16
-      - addr: 2001:db8:cafe::1/48
-
+        dnn: internet
+        dev: ogstun
 #
 # smf:
 #

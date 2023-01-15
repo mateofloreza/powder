@@ -142,21 +142,21 @@ pc.defineParameter(
     advanced=True
 )
 
-pc.defineParameter(
-    name="nodeb2_node_id",
-    description="use a specific compute node for the nodeB",
-    typ=portal.ParameterType.STRING,
-    defaultValue="",
-    advanced=True
-)
-
-pc.defineParameter(
-    name="ue2_node_id",
-    description="use a specific compute node for the UE",
-    typ=portal.ParameterType.STRING,
-    defaultValue="",
-    advanced=True
-)
+#pc.defineParameter(
+#    name="nodeb2_node_id",
+#    description="use a specific compute node for the nodeB",
+#    typ=portal.ParameterType.STRING,
+#    defaultValue="",
+#    advanced=True
+#)
+#
+#pc.defineParameter(
+#    name="ue2_node_id",
+#    description="use a specific compute node for the UE",
+#    typ=portal.ParameterType.STRING,
+#    defaultValue="",
+#    advanced=True
+#)
 
 params = pc.bindParameters()
 request = pc.makeRequestRSpec()

@@ -228,6 +228,76 @@ ue_sdr_link.bandwidth = 10*1000*1000
 ue_sdr_link.addInterface(ue_usrp_if)
 ue_sdr_link.addInterface(ue_sdr_if)
 
+
+# test UE2
+
+nodeb2 = request.RawPC("nodeb2-comp")
+nodeb2.component_manager_id = COMP_MANAGER_ID
+
+if params.nodeb_node_id:
+    nodeb2.component_id = params.nodeb_node_id
+else:
+    nodeb2.hardware_type = params.sdr_nodetype
+
+if params.sdr_compute_image:
+    nodeb2.disk_image = params.sdr_compute_image
+else:
+    nodeb2.disk_image = UBUNTU_IMG
+
+nodeb2_cn_if = nodeb2.addInterface("nodeb2-cn-if")
+nodeb2_cn_if.addAddress(rspec.IPv4Address("192.168.1.3", "255.255.255.0"))
+cn_link.addInterface(nodeb2_cn_if)
+
+
+nodeb2_usrp_if = nodeb2.addInterface("nodeb2-usrp-if")
+nodeb2_usrp_if.addAddress(rspec.IPv4Address("192.168.40.3", "255.255.255.0"))
+
+cmd = '{} "{}"'.format(SRS_DEPLOY_SCRIPT, srsran_hash)
+nodeb2.addService(rspec.Execute(shell="bash", command=cmd))
+nodeb2.addService(rspec.Execute(shell="bash", command="/local/repository/bin/tune-cpu.sh"))
+nodeb2.addService(rspec.Execute(shell="bash", command="/local/repository/bin/tune-sdr-iface.sh"))
+
+nodeb2_sdr = request.RawPC("nodeb-sdr")
+nodeb2_sdr.component_manager_id = COMP_MANAGER_ID
+nodeb2_sdr.component_id = BENCH_SDR_IDS["bench_b"][0]
+nodeb2_sdr_if = nodeb2_sdr.addInterface("nodeb2-sdr-if")
+
+nodeb2_sdr_link = request.Link("nodeb2-sdr-link")
+nodeb2_sdr_link.bandwidth = 10*1000*1000
+nodeb2_sdr_link.addInterface(nodeb2_usrp_if)
+nodeb2_sdr_link.addInterface(nodeb2_sdr_if)
+
+ue2 = request.RawPC("ue-comp")
+ue2.component_manager_id = COMP_MANAGER_ID
+
+if params.ue_node_id:
+    ue.component_id = params.ue_node_id
+else:
+    ue.hardware_type = params.sdr_nodetype
+
+if params.sdr_compute_image:
+    ue.disk_image = params.sdr_compute_image
+else:
+    ue.disk_image = UBUNTU_IMG
+
+ue2_usrp_if = ue2.addInterface("ue2-usrp-if")
+ue2_usrp_if.addAddress(rspec.IPv4Address("192.168.40.3", "255.255.255.0"))
+cmd = '{} "{}"'.format(SRS_DEPLOY_SCRIPT, srsran_hash)
+ue2.addService(rspec.Execute(shell="bash", command=cmd))
+ue2.addService(rspec.Execute(shell="bash", command="/local/repository/bin/tune-cpu.sh"))
+ue2.addService(rspec.Execute(shell="bash", command="/local/repository/bin/tune-sdr-iface.sh"))
+
+ue2_sdr = request.RawPC("ue-sdr")
+ue2_sdr.component_manager_id = COMP_MANAGER_ID
+ue2_sdr.component_id = BENCH_SDR_IDS["bench_b"][1]
+ue2_sdr_if = ue2_sdr.addInterface("ue2-sdr-if")
+
+ue2_sdr_link = request.Link("ue-sdr-link")
+ue2_sdr_link.bandwidth = 10*1000*1000
+ue2_sdr_link.addInterface(ue2_usrp_if)
+ue2_sdr_link.addInterface(ue2_sdr_if)
+
+
 tour = IG.Tour()
 tour.Description(IG.Tour.MARKDOWN, tourDescription)
 tour.Instructions(IG.Tour.MARKDOWN, tourInstructions)

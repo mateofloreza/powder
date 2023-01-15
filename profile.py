@@ -271,14 +271,14 @@ ue2 = request.RawPC("ue2-comp")
 ue2.component_manager_id = COMP_MANAGER_ID
 
 if params.ue_node_id:
-    ue.component_id = params.ue_node_id
+    ue2.component_id = params.ue_node_id
 else:
-    ue.hardware_type = params.sdr_nodetype
+    ue2.hardware_type = params.sdr_nodetype
 
 if params.sdr_compute_image:
-    ue.disk_image = params.sdr_compute_image
+    ue2.disk_image = params.sdr_compute_image
 else:
-    ue.disk_image = UBUNTU_IMG
+    ue2.disk_image = UBUNTU_IMG
 
 ue2_usrp_if = ue2.addInterface("ue2-usrp-if")
 ue2_usrp_if.addAddress(rspec.IPv4Address("192.168.40.3", "255.255.255.0"))

@@ -38,4 +38,10 @@ wget https://raw.githubusercontent.com/open5gs/open5gs/main/misc/db/open5gs-dbct
 chmod +x open5gs-dbctl
 ./open5gs-dbctl add_ue_with_apn 999990000000000 00112233445566778899aabbccddeeff 0ed47545168eafe2c39c075829a7b61f internet  # IMSI,K,OPC
 ./open5gs-dbctl type 999990000000000 1  # APN type IPV4
+./open5gs-dbctl add_ue_with_apn 999990000000001 00112233445566778899aabbccddeef1 0ed47545168eafe2c39c075829a7b611 internet  # IMSI,K,OPC
+./open5gs-dbctl type 999990000000001 1  # APN type IPV4
+./open5gs-dbctl add_ue_with_apn 999990000000002 00112233445566778899aabbccddeef2 0ed47545168eafe2c39c075829a7b612 ims  # IMSI,K,OPC
+./open5gs-dbctl type 999990000000002 1  # APN type IPV4
+./open5gs-dbctl add_ue_with_apn 999990000000003 00112233445566778899aabbccddeef3 0ed47545168eafe2c39c075829a7b613 srsapn  # IMSI,K,OPC
+./open5gs-dbctl type 999990000000003 1  # APN type IPV4
 touch $SRCDIR/open5gs-setup-complete

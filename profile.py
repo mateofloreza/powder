@@ -142,6 +142,22 @@ pc.defineParameter(
     advanced=True
 )
 
+pc.defineParameter(
+    name="nodeb2_node_id",
+    description="use a specific compute node for the nodeB",
+    typ=portal.ParameterType.STRING,
+    defaultValue="",
+    advanced=True
+)
+
+pc.defineParameter(
+    name="ue2_node_id",
+    description="use a specific compute node for the UE",
+    typ=portal.ParameterType.STRING,
+    defaultValue="",
+    advanced=True
+)
+
 params = pc.bindParameters()
 request = pc.makeRequestRSpec()
 
@@ -235,7 +251,7 @@ nodeb2 = request.RawPC("nodeb2-comp")
 nodeb2.component_manager_id = COMP_MANAGER_ID
 
 if params.nodeb_node_id:
-    nodeb2.component_id = params.nodeb_node_id
+    nodeb2.component_id = params.nodeb2_node_id
 else:
     nodeb2.hardware_type = params.sdr_nodetype
 
@@ -271,7 +287,7 @@ ue2 = request.RawPC("ue2-comp")
 ue2.component_manager_id = COMP_MANAGER_ID
 
 if params.ue_node_id:
-    ue2.component_id = params.ue_node_id
+    ue2.component_id = params.ue2_node_id
 else:
     ue2.hardware_type = params.sdr_nodetype
 

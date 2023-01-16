@@ -391,6 +391,9 @@ smf:
       - addr: ::1
     subnet:
       - addr: 10.45.0.1/16
+        dnn: internet
+      - addr: 10.46.0.1/16
+        dnn: ims
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -501,6 +504,9 @@ nrf:
 upf:
     pfcp:
       - addr: 127.0.0.7
+        dnn: internet
+      - addr: 192.168.1.10
+        dnn: ims
 
 #
 # parameter:

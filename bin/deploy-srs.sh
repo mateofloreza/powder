@@ -63,10 +63,11 @@ cd
 git clone https://github.com/aligungr/UERANSIM
 cd UERANSIM/
 make
+touch $SRCDIR/ueransim_deploy
 
-cp /local/repository/config/ueran-gnb.yaml ~/UERANSIM/config/open5gs-gnb.yaml
+cp /local/repository/etc/UERANSIM/open5gs-gnb.yaml ~/UERANSIM/config/open5gs-gnb.yaml
 mkdir ~/UERANSIM/config/open5gs-ue
-cp /local/repository/config/ueran-ue.yaml ~/UERANSIM/config/open5gs-ue/ue-default.yaml
+cp /local/repository/etc/UERANSIM/ueran-ue.yaml ~/UERANSIM/config/open5gs-ue/ue-default.yaml
 replace_in_file() {
     # $1 is string to find, $2 is string to replace, $3 is filename
     sed -i "s/$1/$2/g" $3

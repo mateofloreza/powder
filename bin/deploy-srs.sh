@@ -64,6 +64,33 @@ git clone https://github.com/aligungr/UERANSIM
 cd UERANSIM/
 make
 
+cp /local/repository/config/ueran-gnb.yaml ~/UERANSIM/config/open5gs-gnb.yaml
+mkdir ~/UERANSIM/config/open5gs-ue
+cp /local/repository/config/ueran-ue.yaml ~/UERANSIM/config/open5gs-ue/ue-default.yaml
+replace_in_file() {
+    # $1 is string to find, $2 is string to replace, $3 is filename
+    sed -i "s/$1/$2/g" $3
+}
+
+cd ~/UERANSIM/config/open5gs-ue
+# autogenerate config files for each ue
+upper=$((5 - 1))
+for i in $(seq 0 $upper); do
+    file=ue"$i.yaml"
+    defaultkey="00112233445566778899aabbccddeef1"
+    newkey=$(printf "%0.s$i" {1..32})
+    cp ue-default.yaml $file
+    replace_in_file $defaultkey $newkey $file
+    defaultimsi="imsi-999990000000001"
+    newimsi="imsi-99999000000000$i"
+    replace_in_file $defaultimsi $newimsi $file
+    defaultapn="internet"
+    newapn="ims"
+    if [ $i -gt 2 ]
+    then
+        replace_in_file $defaultapn $newapn $file
+    fi
+done
 
 
 touch $SRCDIR/srs-setup-complete

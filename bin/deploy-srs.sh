@@ -59,6 +59,7 @@ cd cmake-3.20.0
 ./bootstrap
 make
 sudo make install
+touch $SRCDIR/cmake_deploy
 cd
 git clone https://github.com/aligungr/UERANSIM
 cd UERANSIM/

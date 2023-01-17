@@ -171,7 +171,8 @@ upf:
       - addr: 192.168.1.10
     subnet:
       - addr: 10.46.0.1/16
-      - addr: 2001:db8:cafe::1/48
+        dnn: ims
+        dev: ogstun2
 
 #upf:
 #    pfcp:
